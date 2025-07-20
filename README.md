@@ -18,12 +18,6 @@ A secure REST API for managing MI6's gadget inventory system with authentication
 - JWT Authentication
 - bcrypt for password hashing
 
-## Prerequisites
-
-- Node.js (v14+)
-- PostgreSQL database
-- npm or yarn
-
 ## Installation
 
 1. Clone the repository
@@ -39,12 +33,8 @@ npm install
 
 3. Create `.env` file
 ```env
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=your_db_user
-DB_PASSWORD=your_db_password
-DB_NAME=mi6_gadgets
+PORT=5000
+DATABASE_URL=<your_databaseurl>
 JWT_SECRET=your_jwt_secret_key
 ```
 
