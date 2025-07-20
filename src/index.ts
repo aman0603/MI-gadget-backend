@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import 'reflect-metadata';
 import { AppDataSource } from './config/database';
 import gadgetRoutes from './routes/gadgetRoutes';
+import authRoutes from './routes/authRoutes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -15,16 +16,29 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({ 
     message: 'MI6 Gadget Inventory API',
-    version: '1.0.0',
+    version: '2.0.0',
     endpoints: {
-      gadgets: '/api/gadgets'
-    }
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile'
+      },
+      gadgets: {
+        list: 'GET /api/gadgets',
+        create: 'POST /api/gadgets',
+        update: 'PATCH /api/gadgets/:id',
+        delete: 'DELETE /api/gadgets/:id',
+        selfDestruct: 'POST /api/gadgets/:id/self-destruct'
+      }
+    },
+    authentication: 'Bearer token required for gadget endpoints'
   });
 });
 
+app.use('/api/auth', authRoutes);
 app.use('/api/gadgets', gadgetRoutes);
 
 app.use(notFoundHandler);

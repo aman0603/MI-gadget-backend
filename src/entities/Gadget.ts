@@ -10,27 +10,27 @@ export enum GadgetStatus {
 @Entity('gadgets')
 export class Gadget {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name!: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
-  codename: string;
+  codename!: string;
 
   @Column({
     type: 'enum',
     enum: GadgetStatus,
     default: GadgetStatus.AVAILABLE
   })
-  status: GadgetStatus;
+  status!: GadgetStatus;
 
   @Column({ type: 'timestamp', nullable: true })
-  decommissionedAt: Date | null;
+  decommissionedAt!: Date | null;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

@@ -6,13 +6,14 @@ import {
   deleteGadget,
   selfDestructGadget
 } from '../controllers/gadgetController';
+import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/', getGadgets);
-router.post('/', createGadget);
-router.patch('/:id', updateGadget);
-router.delete('/:id', deleteGadget);
-router.post('/:id/self-destruct', selfDestructGadget);
+router.get('/', authenticate, getGadgets);
+router.post('/', authenticate, createGadget);
+router.patch('/:id', authenticate, updateGadget);
+router.delete('/:id', authenticate, deleteGadget);
+router.post('/:id/self-destruct', authenticate, selfDestructGadget);
 
 export default router;

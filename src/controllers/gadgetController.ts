@@ -126,6 +126,7 @@ export const deleteGadget = async (req: Request, res: Response, next: NextFuncti
 export const selfDestructGadget = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params;
+    const { confirmationCode } = req.body;
 
     const gadget = await gadgetRepository.findOne({ where: { id } });
 
@@ -139,15 +140,36 @@ export const selfDestructGadget = async (req: Request, res: Response, next: Next
       return;
     }
 
-    const confirmationCode = nanoid(10).toUpperCase();
+    if (gadget.status === GadgetStatus.DECOMMISSIONED) {
+      res.status(400).json({ error: 'Cannot self-destruct decommissioned gadget' });
+      return;
+    }
+
+    if (!confirmationCode) {
+      const generatedCode = nanoid(10).toUpperCase();
+      res.json({
+        message: 'Self-destruct sequence requires confirmation',
+        warning: 'This action cannot be undone!',
+        confirmationCode: generatedCode,
+        instructions: 'Send a POST request with this confirmation code to proceed'
+      });
+      return;
+    }
+
+    const expectedCode = confirmationCode.toUpperCase();
+    if (expectedCode.length !== 10) {
+      res.status(400).json({ error: 'Invalid confirmation code format' });
+      return;
+    }
     
     gadget.status = GadgetStatus.DESTROYED;
     await gadgetRepository.save(gadget);
     
     res.json({
-      message: 'Self-destruct sequence initiated',
-      confirmationCode,
-      gadget
+      message: 'Self-destruct sequence completed',
+      confirmationCode: expectedCode,
+      gadget,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
     next(error);
