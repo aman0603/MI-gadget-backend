@@ -2,6 +2,14 @@
 
 A secure REST API for managing MI6's gadget inventory system with authentication and self-destruct capabilities.
 
+**Live API**: https://mi-gadget-backend.onrender.com
+
+## Screenshots
+
+![List all mission](./assets/gadgets.png)
+![Confirmation Code](./assets/destroy_code.png)
+![Destroy Mission](./assets/destroy.png)
+
 ## Features
 
 - JWT-based authentication
@@ -22,7 +30,7 @@ A secure REST API for managing MI6's gadget inventory system with authentication
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/aman0603/MI-gadget-backend.git
 cd MI-backend
 ```
 
@@ -93,7 +101,7 @@ Authorization: Bearer {token}
 GET /api/gadgets
 Authorization: Bearer {token}
 
-# Optional: Filter by status
+Filter by status
 GET /api/gadgets?status=available
 ```
 
